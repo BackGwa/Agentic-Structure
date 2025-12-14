@@ -7,8 +7,9 @@ Rather than planning and proceeding with everything independently, the goal is t
 Additionally, the documentation includes good and bad practices, code style rules, and library usage guidelines, which should be referenced throughout the development process.
 
 # Guideline Collection
-These are pull-when-needed references—only read the parts relevant to your current task; no expectation to consume everything upfront.
+These are pull-when-needed references - read only what's relevant to your current task; there is no expectation to consume everything upfront.
 
-@DEVELOPMENT_PROCESS.md - Core principles, decision ownership, and knowledge sharing workflow
-@DISCUSSION_GUIDELINES.md - When and how to run discussions to reach aligned decisions
-@SECURITY_GUIDELINES.md - Secure defaults for secrets, hashing, auth, and production exposure
+@guidelines/DEVELOPMENT_PROCESS.md - Core principles, decision ownership, and knowledge sharing workflow
+@guidelines/DISCUSSION_GUIDELINES.md - When and how to run discussions to reach aligned decisions
+@guidelines/SECURITY_GUIDELINES.md - Secure defaults for secrets, hashing, auth, and production exposure
+@guidelines/COMMENTING_GUIDELINES.md - Minimal, high-signal commenting rules and documentation boundaries
