@@ -6,12 +6,42 @@ Effective communication is the cornerstone of successful collaboration. This doc
 ## When to Initiate Discussion
 
 ### Handling Ambiguous Requirements
-- Multiple Interpretations: When requirements can be understood in different ways
-  - Example: "Make it faster" could mean reducing load time, improving response time, or optimizing database queries
-- Vague Directives: When facing abstract terms like "scalable", "maintainable", or "user-friendly"
-  - Action: Request specific, measurable criteria for success
-- Missing Context: When the business or user need behind a request isn't clear
-  - Action: Ask "What problem are we trying to solve?"
+
+#### Trigger Conditions (ANY = ambiguous, requires discussion)
+- [ ] User request contains subjective terms without specific criteria
+- [ ] Two or more implementation approaches match the description equally well
+- [ ] Requirements imply technical constraints not explicitly stated
+- [ ] Success criteria not defined (no clear definition of "done")
+- [ ] Request references "similar to X" but X has multiple valid interpretations
+
+#### Detecting Unmeasurable Terms
+When user request contains these terms WITHOUT criteria, stop and ask for clarification:
+
+| Ambiguous Term | Specific Question to Ask |
+|----------------|--------------------------|
+| "scalable" | "What scale? (number of users, requests/sec, data volume, concurrent operations)" |
+| "fast" / "quick" | "What metric? (page load time, API response time, throughput, processing latency)" |
+| "maintainable" | "What aspect? (testability, modularity, documentation coverage, ease of modification)" |
+| "user-friendly" | "What behavior? (fewer clicks, clearer error messages, faster feedback, simpler navigation)" |
+| "secure" | "What threat model? (authentication, data privacy, injection attacks, DoS prevention, secrets management)" |
+| "robust" | "What failure scenarios? (network issues, invalid input, high load, service outages)" |
+| "efficient" | "Optimize for what? (memory usage, CPU time, network bandwidth, database queries)" |
+| "better" / "improve" | "Better than what? What specific metric should improve?" |
+
+#### Action Protocol
+When ambiguous term detected:
+1. Quote the term: "You mentioned '[term]'"
+2. Ask specific question from table above
+3. Request measurable criteria: "To implement this correctly, I need to know: [specific question]"
+4. Wait for clarification before proposing solutions
+
+#### Multiple Interpretations Example
+- Request: "Add caching to improve performance"
+- Ambiguities:
+  - Cache where? (Browser, CDN, application, database query results)
+  - Cache what? (API responses, rendered pages, computed values, database queries)
+  - What performance? (Response time, server load, database load, bandwidth)
+- Action: Present 2-3 specific interpretations and ask which matches user intent
 
 ### Evaluating Implementation Options
 - Technical Trade-offs: When different approaches have competing advantages
@@ -24,13 +54,48 @@ Effective communication is the cornerstone of successful collaboration. This doc
   - Cross-team dependencies
 
 ### Ensuring Consistency
-- Pattern Alignment: Before introducing new patterns or libraries
-  - Check existing codebase for similar implementations
-  - Document deviations from established patterns
-- Style Guide Adherence: When style guidelines might be compromised
-  - Exception handling approaches
-  - Naming conventions
-  - Code organization
+
+#### Pattern Consistency Check
+
+##### Trigger Conditions for "New Pattern" Detection
+Before introducing any of the following, run this consistency check:
+- [ ] A library not already in package dependencies
+- [ ] An architectural pattern not found in existing code (e.g., singleton, factory, observer, repository)
+- [ ] A file organization structure different from current layout
+- [ ] An error handling approach not matching existing error handling
+- [ ] A naming convention that differs from codebase style
+- [ ] A state management approach not currently used
+
+##### Action Protocol
+1. **Search codebase** for similar implementations using Grep/Glob
+2. **If pattern found in codebase:**
+   - Use existing pattern for consistency
+   - Example: "I found existing error handling uses custom Error classes, so I'll follow that pattern"
+3. **If pattern NOT found in codebase:**
+   - Present to user:
+     - "The codebase currently uses [X pattern]"
+     - "Your request would introduce [Y pattern]"
+     - "Options:"
+       - "A. Adapt request to use existing [X pattern]"
+       - "B. Introduce new [Y pattern] (requires changing conventions)"
+   - Wait for user decision
+
+##### Example
+Request: "Add Redux for state management"
+Current codebase: Uses React Context API
+Action:
+1. Search reveals Context API in 5 components
+2. Present: "Codebase uses Context API. Options: (A) Use Context API for this feature, (B) Introduce Redux (affects architecture)"
+3. Wait for user choice
+
+#### Style Guide Adherence
+When existing code style might be affected:
+- Exception handling approaches
+- Naming conventions (camelCase vs snake_case, etc.)
+- Code organization (feature-based vs layer-based)
+- Comment style and density
+
+Before deviating from observed patterns, discuss with user.
 
 ### Scope Definition
 - Feature Boundaries: When requirements lack clear parameters
@@ -41,16 +106,51 @@ Effective communication is the cornerstone of successful collaboration. This doc
 ## Effective Communication Strategies
 
 ### Structured Decision Making
-1. Option Analysis
-   - Present 2-3 viable approaches
-   - Use a consistent comparison framework
-   - Include effort estimates for each option
 
-2. Impact Assessment
-   - Technical debt implications
-   - Performance considerations
-   - Maintenance requirements
-   - Team skill requirements
+#### When to Present Options
+- [ ] Multiple valid implementation approaches exist with different trade-offs
+- [ ] Choosing one approach excludes benefits of others
+- [ ] Trade-off impacts core requirements (performance, maintainability, security)
+- [ ] Architectural decision affects multiple parts of system
+
+#### Option Presentation Protocol
+1. **Present 2-3 viable approaches** (not more - too many options paralyze decision-making)
+2. **Use structured comparison table** (see template below)
+3. **Include complexity assessment** (NOT time estimates - see assessment criteria below)
+4. **State your recommendation** with reasoning based on project context
+
+#### Complexity Assessment Criteria
+Replace "effort estimates" with these concrete measures:
+
+| Assessment Dimension | Small | Medium | Large |
+|---------------------|-------|--------|-------|
+| Implementation Scope | Single file/function | Multiple related files (2-5) | Architectural change (6+ files) |
+| Risk Level | Well-established pattern | New pattern to codebase | Novel approach, unproven |
+| Dependency Count | 0-1 files modified | 2-5 files modified | 6+ files or new external dependency |
+| Testing Impact | Existing tests sufficient | Need new test cases | Need test infrastructure changes |
+| Reversibility | Easy to undo | Moderate refactoring to undo | Difficult/impossible to reverse |
+
+#### Structured Comparison Table Template
+Present options using this format:
+
+| Criterion | Option A: [Name] | Option B: [Name] | Option C: [Name] |
+|-----------|------------------|------------------|------------------|
+| Implementation Scope | [Small/Medium/Large] | [Small/Medium/Large] | [Small/Medium/Large] |
+| Risk Level | [Low/Medium/High] | [Low/Medium/High] | [Low/Medium/High] |
+| Dependency Count | [#] files affected | [#] files affected | [#] files affected |
+| Maintainability Impact | [Improves/Neutral/Degrades] | [Improves/Neutral/Degrades] | [Improves/Neutral/Degrades] |
+| Performance Impact | [Improves/Neutral/Degrades] | [Improves/Neutral/Degrades] | [Improves/Neutral/Degrades] |
+| Compatibility Impact | [None/Minor/Breaking] | [None/Minor/Breaking] | [None/Minor/Breaking] |
+| Alignment with Codebase | [Consistent/New pattern/Deviation] | [Consistent/New pattern/Deviation] | [Consistent/New pattern/Deviation] |
+
+**Recommendation:** [State which option and why, based on above comparison]
+
+#### Impact Assessment
+After presenting comparison table, address these dimensions:
+- **Technical debt implications**: Will this create future maintenance burden?
+- **Performance considerations**: What are the runtime/memory/network impacts?
+- **Maintenance requirements**: How easy is it to modify, debug, or extend?
+- **Team familiarity**: Does team have experience with this approach?
 
 ### Context Provision
 - Situation Analysis

@@ -59,11 +59,38 @@ Treat abuse resistance as a baseline production requirement, especially for publ
 - Public APIs and webhooks (per token/API key, per tenant, per source)
 
 ### Recommended controls
-- Use per-IP and per-identity limits (user, account, API key, tenant) with sensible quotas.
-- Return `429 Too Many Requests` with `Retry-After` where applicable; avoid leaking whether an account exists.
-- Add backoff/lockout for repeated failed authentication attempts; log and alert on anomalies.
-- Set request size/time limits and concurrency caps to reduce DoS risk.
-- Consider bot mitigation for high-risk flows (e.g., device signals, proof-of-work, CAPTCHA) when appropriate.
+
+#### Rate Limit Baselines
+Use per-IP and per-identity limits (user, account, API key, tenant) with these baseline quotas:
+
+| Endpoint Type | Baseline Quota | Scope | Reasoning |
+|--------------|----------------|-------|-----------|
+| Authentication (login, signup, password reset) | 5 attempts per minute | Per IP address | Prevent brute force while allowing legitimate retries |
+| High-cost operations (search, reports, AI) | 10 requests per minute | Per user/account | Balance usage with resource protection |
+| Public APIs | 100 requests per hour | Per API key | Standard tier for external integrations |
+| Public webhooks | 1000 requests per hour | Per tenant | High volume for event-driven systems |
+
+**Adjust quotas based on:**
+- Observed legitimate usage patterns
+- Resource cost (CPU, memory, external API calls)
+- Security risk level (auth endpoints need stricter limits)
+- User tier (free vs paid accounts)
+
+**Document chosen limits:**
+- Add limits to API documentation
+- Include limits in code comments near rate limiting logic
+- Log when limits are adjusted and why
+
+#### Additional Controls
+- Return `429 Too Many Requests` with `Retry-After` header where applicable
+- Avoid leaking whether an account exists in rate limit responses
+- Add backoff/lockout for repeated failed authentication attempts
+  - Example: After 5 failed attempts in 5 minutes, lock for 15 minutes
+- Log and alert on anomalies (sudden spikes, distributed attacks)
+- Set request size/time limits and concurrency caps to reduce DoS risk
+  - Request body size: ≤10MB for most endpoints, ≤100MB for file uploads
+  - Request timeout: ≤30 seconds for API calls, ≤5 minutes for long operations
+- Consider bot mitigation for high-risk flows (device signals, proof-of-work, CAPTCHA) when appropriate
 
 ## File and Upload Security
 Assume all uploads are untrusted. Validate, isolate, and minimize what you store and process.

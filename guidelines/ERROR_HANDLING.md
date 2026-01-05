@@ -5,9 +5,107 @@ Error handling is not primarily about catching exceptions; it is about designing
 
 ## Core Principles
 - Exceptions are not a normal control-flow tool. When possible, express failure as an explicit error result.
-- Handle exceptions only when necessary. Meaningless `try/catch` hides root causes and increases maintenance cost.
-- Every failure must have a clear “owner” for where it is handled. Convert/map failures consistently at boundaries.
+- Handle exceptions only when necessary. Use the Meaningful Error Handling Test below to decide.
+- Every failure must have a clear "owner" for where it is handled. Convert/map failures consistently at boundaries.
 - Do not leak sensitive information through error messages or logs.
+
+## Decision Point: When to Add Try-Catch
+
+### Meaningful Error Handling Test
+Add try-catch ONLY if it meets **at least one** of these criteria:
+
+#### Meaningful (justify try-catch)
+- [ ] Can recover from error (retry with backoff, fallback to alternate path, use cached value)
+- [ ] Can add contextual information not in original error (what operation was being performed, which resource)
+- [ ] Can transform error into domain-specific error type (DatabaseError → UserNotFoundError)
+- [ ] Can clean up resources (close files, release connections, unlock resources)
+- [ ] Can apply different handling based on error type (transient vs permanent, auth vs validation)
+
+#### Meaningless (DO NOT add try-catch)
+- [ ] Catch only to log and rethrow unchanged
+- [ ] Catch only to wrap in generic error with no added context
+- [ ] Catch broad exception type (Error, Exception) and treat all cases identically
+- [ ] Catch to return undefined/null without signaling failure to caller
+- [ ] Catch to hide errors from caller who needs to know about failure
+
+### Decision Template
+Before adding try-catch, complete this sentence:
+**"I am catching [specific error type] because [recovery action OR context added]"**
+
+If you cannot complete this sentence meaningfully, DO NOT add try-catch.
+
+### Examples
+
+#### Meaningful Try-Catch
+```javascript
+// GOOD: Adds context
+try {
+  await api.syncUser(userId);
+} catch (error) {
+  throw new Error(`Failed to sync user ${userId} to CRM: ${error.message}`);
+}
+
+// GOOD: Recovers with fallback
+try {
+  return await primaryApi.getData();
+} catch (error) {
+  logger.warn(`Primary API failed, using cache: ${error}`);
+  return await cache.get('data');
+}
+
+// GOOD: Different handling by error type
+try {
+  await processPayment(order);
+} catch (error) {
+  if (error instanceof TransientError) {
+    return retryLater(order);
+  }
+  if (error instanceof FraudError) {
+    return blockAndNotify(order);
+  }
+  throw error;  // Unknown error, propagate
+}
+
+// GOOD: Resource cleanup
+const file = await openFile(path);
+try {
+  return await processFile(file);
+} finally {
+  await file.close();  // Always cleanup
+}
+```
+
+#### Meaningless Try-Catch
+```javascript
+// BAD: Only logs and rethrows (no value added)
+try {
+  await api.call();
+} catch (error) {
+  console.log(error);
+  throw error;
+}
+
+// BAD: Hides error without signaling failure
+try {
+  return await fetchData();
+} catch (error) {
+  return null;  // Caller doesn't know fetch failed
+}
+
+// BAD: Generic wrapping without context
+try {
+  await complexOperation();
+} catch (error) {
+  throw new Error('Something went wrong');  // No useful info
+}
+
+// BAD: Broad catch treating everything the same
+try {
+  await manyOperations();
+} catch (error) {
+  return {success: false};  // Lost all error details
+}
+```
 
 ## Where to Handle Errors (Layer Responsibilities)
 Separate responsibilities by layer:

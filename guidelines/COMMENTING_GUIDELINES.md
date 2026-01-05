@@ -4,10 +4,76 @@
 Comments should convey essential intent with the minimum necessary words. If the code is clean and self-explanatory, it should be understandable with few or no comments.
 
 ## Core Principles
-- Prefer clarity in code over comments: Use clear naming and simple control flow to avoid needing comments.
-- Comment the “why”, not the “what”: Code already shows *what* happens; comments should explain intent, constraints, trade-offs, and impact.
-- Avoid comment noise: Excessive comments reduce readability and make maintenance harder.
-- High-signal only: Add comments only when they materially improve understanding or prevent misuse.
+- **Prefer clarity in code over comments**: Use clear naming and simple control flow to avoid needing comments.
+- **Comment the "why", not the "what"**: Code already shows *what* happens; comments should explain intent, constraints, trade-offs, and impact.
+- **Avoid comment noise**: Excessive comments reduce readability and make maintenance harder.
+- **High-signal only**: Add comments only when passing the Comment Signal Test below.
+
+### Comment Signal Test
+A comment is "high-signal" if it passes **2 or more** of these criteria:
+
+#### High Signal (justify comment)
+- [ ] Explains non-obvious side effect (state mutation, API call, file I/O, caching, database write)
+- [ ] Documents security assumption (input is trusted/untrusted, auth required, rate limited)
+- [ ] Clarifies business rule from external requirement (legal, policy, API contract, client specification)
+- [ ] Warns about sharp edges (performance cliff, race condition, browser incompatibility, breaking change)
+- [ ] Documents intentional deviation from best practice (with reason why deviation is necessary)
+- [ ] Explains non-obvious algorithm or optimization (why this specific approach was chosen)
+
+#### Low Signal (DO NOT comment)
+- [ ] Restates function name or variable name
+- [ ] Describes what code visibly does (code already shows this)
+- [ ] Adds attribution ("written by", "modified by") - use git instead
+- [ ] Placeholder for future work ("TODO: add feature X") - use issue tracker instead
+- [ ] Version history - use git instead
+- [ ] Commented-out code - delete it, git preserves history
+
+### Decision Protocol
+Before adding comment, ask these questions:
+1. **Can I make code clearer instead?**
+   - Rename variables/functions to be self-explanatory?
+   - Extract complex logic into named functions?
+   - Simplify conditions or control flow?
+2. **Is this information visible in code?**
+   - Type signatures show data structure?
+   - Function names show intent?
+   - Variable names show purpose?
+3. **Does this explain WHY (high signal) or WHAT (low signal)?**
+   - WHY: Reasoning, constraints, trade-offs → Add comment
+   - WHAT: Step-by-step description → Refactor code instead
+
+**Decision:**
+- If answers are "yes, yes, WHAT" → DO NOT add comment, refactor code
+- If answers are "no, no, WHY" → ADD comment
+
+### Comment Density Rules
+Monitor comment-to-code ratio to prevent noise:
+
+**Acceptable Ratios:**
+- **File level**: ≤20% comment lines
+  - If >20%, code likely needs simplification or restructuring
+- **Function level**: ≤2 comments per function
+  - If more, function is likely too complex - extract smaller functions
+- **Block level**: ≤1 comment per 10 lines of code
+  - If more, consider extracting functions with descriptive names
+
+**Calculation:**
+```
+Comment density = (comment lines / total lines) × 100%
+```
+
+**Excessive Comment Indicators** (ANY = refactor code instead)
+- [ ] Multiple consecutive comment lines (3+) explaining code flow
+- [ ] Every variable assignment has a comment
+- [ ] Comment length exceeds code length in same section
+- [ ] Comments have more complex vocabulary than code
+
+**Refactoring Action:**
+If comment density exceeds limits:
+1. Extract commented blocks into named functions
+2. Rename variables to eliminate need for explanation
+3. Simplify logic to make flow obvious
+4. Move complex explanations to documentation (not inline comments)
 
 ## When to Add Comments
 Use comments when they explain something the code cannot express clearly on its own:
