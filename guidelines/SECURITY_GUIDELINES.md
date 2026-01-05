@@ -60,8 +60,10 @@ Treat abuse resistance as a baseline production requirement, especially for publ
 
 ### Recommended controls
 
-#### Rate Limit Baselines
-Use per-IP and per-identity limits (user, account, API key, tenant) with these baseline quotas:
+#### Rate Limit Baselines (Suggested Starting Points)
+Use these as **initial guidance only**. Adjust based on your specific use case, observed traffic patterns, resource constraints, and security requirements.
+
+Use per-IP and per-identity limits (user, account, API key, tenant) with these suggested baseline quotas:
 
 | Endpoint Type | Baseline Quota | Scope | Reasoning |
 |--------------|----------------|-------|-----------|
@@ -70,7 +72,12 @@ Use per-IP and per-identity limits (user, account, API key, tenant) with these b
 | Public APIs | 100 requests per hour | Per API key | Standard tier for external integrations |
 | Public webhooks | 1000 requests per hour | Per tenant | High volume for event-driven systems |
 
-**Adjust quotas based on:**
+⚠️ **These are suggestions, not requirements.** Every application has different needs:
+- Adjust quotas based on observed legitimate usage
+- Consider resource costs and security risks
+- Document your chosen limits and rationale
+
+**Additional considerations when adjusting quotas:**
 - Observed legitimate usage patterns
 - Resource cost (CPU, memory, external API calls)
 - Security risk level (auth endpoints need stricter limits)
@@ -88,8 +95,8 @@ Use per-IP and per-identity limits (user, account, API key, tenant) with these b
   - Example: After 5 failed attempts in 5 minutes, lock for 15 minutes
 - Log and alert on anomalies (sudden spikes, distributed attacks)
 - Set request size/time limits and concurrency caps to reduce DoS risk
-  - Request body size: ≤10MB for most endpoints, ≤100MB for file uploads
-  - Request timeout: ≤30 seconds for API calls, ≤5 minutes for long operations
+  - Request body size: Example limits: 10MB for most endpoints, 100MB for file uploads. Adjust based on use case—document processing may need larger limits, mobile apps may need smaller.
+  - Request timeout: Example timeouts: 30 seconds for API calls, 5 minutes for long operations. Adjust for network conditions and processing complexity.
 - Consider bot mitigation for high-risk flows (device signals, proof-of-work, CAPTCHA) when appropriate
 
 ## File and Upload Security

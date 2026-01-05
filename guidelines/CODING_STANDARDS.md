@@ -18,9 +18,9 @@ Write code that is clear, safe, production-ready, and easy to maintain. The inte
 
 ### Single Responsibility Check (apply to each file)
 - [ ] File contains code for ONE feature or ONE data type
-- [ ] File exports ≤3 public functions/classes (if more, consider splitting)
-- [ ] File is ≤500 lines (if more, MUST split)
-- [ ] File has ≤2 distinct concerns (if more, MUST split)
+- [ ] File has focused public interface (many exports may indicate unclear module boundaries)
+- [ ] File size is reasonable for its purpose (large files may indicate multiple concerns)
+- [ ] File has clear, cohesive focus (mixing multiple unrelated concerns suggests splitting)
 
 ### Split Triggers (ANY = must split file)
 - [ ] File mixes UI and business logic
@@ -33,11 +33,12 @@ Write code that is clear, safe, production-ready, and easy to maintain. The inte
 Prefer this structure for features:
 ```
 [feature-name]/
-  ├── types.ts        (≤100 lines: interfaces, types, constants)
-  ├── logic.ts        (≤300 lines: business logic, transformations)
-  ├── api.ts          (≤200 lines: external calls, data fetching)
-  └── index.ts        (≤50 lines: public exports only)
+  ├── types.ts        # Type definitions, interfaces, constants
+  ├── logic.ts        # Business logic and transformations
+  ├── api.ts          # External calls and data fetching
+  └── index.ts        # Public exports only
 ```
+Keep files focused and cohesive. Let file size emerge from actual feature needs.
 
 ### Avoid Over-Fragmentation
 DO NOT split when:
@@ -107,25 +108,36 @@ Aim for code that does not require comments.
 
 ## Control Flow and Nesting
 
-### Nesting Limit: Maximum 3 Levels
-Count indentation levels inside function body:
+### Nesting Guidelines
+Prefer shallow nesting for readability. Consider refactoring when:
+- Logic becomes difficult to follow
+- Multiple levels of conditional branching obscure intent
+- Early returns or extracted functions would clarify
+
+Deep nesting may be appropriate for:
+- Tree/graph algorithms
+- Nested data structure processing (JSON validation, DOM traversal)
+- HTML/JSX rendering with natural hierarchy
+
+Example of shallow nesting:
 ```javascript
-function example() {          // Level 0 (function body)
-  if (condition) {            // Level 1
-    for (item of items) {     // Level 2
-      if (check) {            // Level 3 ← MAXIMUM ALLOWED
-        // code here
+function example() {
+  if (condition) {
+    for (item of items) {
+      if (check) {
+        // Consider refactoring if complexity increases
       }
     }
   }
 }
 ```
 
-### Refactoring Triggers (ANY = must refactor)
-- [ ] Code reaches 4+ nesting levels
-- [ ] Else-if chain has 4+ branches
-- [ ] Function body exceeds 50 lines
-- [ ] Nested callback functions (callback hell)
+### Refactoring Triggers
+Consider refactoring when:
+- [ ] Function mixes multiple concerns or responsibilities
+- [ ] Conditional chains become difficult to understand
+- [ ] Nesting makes logic hard to follow
+- [ ] Callback nesting creates comprehension difficulty
 
 ### Refactoring Actions
 When trigger is met, apply IN ORDER:
@@ -169,39 +181,34 @@ function processOrder(order) {
 
 ### Composition Over Inheritance
 - Prefer composition (combining smaller objects) over deep inheritance hierarchies
-- Inheritance depth limit: ≤2 levels (Base → Derived, no further)
-- If inheritance exceeds 2 levels, refactor to composition or interfaces
+- Prefer shallow inheritance hierarchies. Deep inheritance often indicates composition would be clearer.
+- When inheritance chain becomes difficult to understand, consider composition
+- Multiple levels may be appropriate when modeling clear conceptual relationships
 
 ### Abstraction Decision Point
 
-#### When to Create Abstraction (ALL must be true)
-- [ ] Code pattern repeats in 3+ locations
-- [ ] Repeated code is meaningfully identical (not coincidentally similar)
-- [ ] Abstraction reduces total lines of code by ≥30%
+#### When to Create Abstraction
+Consider creating abstraction when:
+- [ ] Code pattern repeats meaningfully (not coincidentally similar)
+- [ ] Abstraction improves clarity or maintainability
 - [ ] Abstraction doesn't hide control flow or introduce "magic" behavior
 - [ ] Using abstraction is simpler than inline code
+- [ ] Abstraction improves testability or error handling
 
-#### When NOT to Abstract (ANY is true = do not abstract)
-- [ ] Pattern appears in only 1-2 places
-- [ ] Abstraction requires 3+ generic parameters/arguments
+#### When NOT to Abstract
+Avoid abstraction when:
+- [ ] Pattern appears rarely or coincidentally
+- [ ] Abstraction requires excessive generic parameters or complex type constraints
 - [ ] Abstraction combines unrelated concerns
 - [ ] Using abstraction is more complex than inline code
 - [ ] Abstraction hides important details (errors, side effects, performance implications)
-- [ ] Abstraction would only be used once
 
-#### Abstraction Test
-Before creating abstraction, write out:
-1. **Inline version**: Current repeated code
-2. **Abstracted version**: Proposed helper/class
-3. **Call sites**: How abstraction would be used
-
-**Decision rule:**
-- If (abstracted version + all call sites) ≥ (total inline version): DO NOT ABSTRACT
-- If abstraction saves <30% total lines: DO NOT ABSTRACT
+**Decision approach:**
+Create abstraction when it improves code quality—consider clarity, testability, and maintainability, not line count savings.
 
 #### Example
 ```javascript
-// Repeated 3 times (90 lines total)
+// Repeated pattern that benefits from abstraction
 function saveUser(user) {
   validate(user);
   const result = await db.save(user);
@@ -209,8 +216,8 @@ function saveUser(user) {
   return result;
 }
 
-// Abstraction (20 lines) + 3 call sites (9 lines) = 29 lines
-// Savings: (90 - 29) / 90 = 68% → JUSTIFIED
+// Similar pattern for products, orders, etc.
+// Abstraction improves maintainability and consistency
 
 function saveEntity(entity, entityType) {
   validate(entity);
@@ -218,6 +225,8 @@ function saveEntity(entity, entityType) {
   logger.log(`${entityType} saved`);
   return result;
 }
+
+// Usage is clearer and changes to save logic happen in one place
 saveEntity(user, 'User');
 saveEntity(product, 'Product');
 saveEntity(order, 'Order');

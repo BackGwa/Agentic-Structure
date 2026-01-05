@@ -46,30 +46,26 @@ Before adding comment, ask these questions:
 - If answers are "yes, yes, WHAT" → DO NOT add comment, refactor code
 - If answers are "no, no, WHY" → ADD comment
 
-### Comment Density Rules
-Monitor comment-to-code ratio to prevent noise:
+### Comment Density Indicators
+Monitor comment patterns to identify potential code clarity issues:
 
-**Acceptable Ratios:**
-- **File level**: ≤20% comment lines
-  - If >20%, code likely needs simplification or restructuring
-- **Function level**: ≤2 comments per function
-  - If more, function is likely too complex - extract smaller functions
-- **Block level**: ≤1 comment per 10 lines of code
-  - If more, consider extracting functions with descriptive names
+**Warning Signals:**
+- **High comment density** may indicate overly complex code
+  - Consider: Does code need simplification?
+  - Exceptions: Regulatory requirements, security-critical code, complex algorithms
+- **Many inline comments** may suggest unclear logic
+  - Consider: Could extracted functions with descriptive names replace comments?
+- **Comment-heavy functions** may be doing too much
+  - Consider: Does function mix multiple concerns?
 
-**Calculation:**
-```
-Comment density = (comment lines / total lines) × 100%
-```
-
-**Excessive Comment Indicators** (ANY = refactor code instead)
-- [ ] Multiple consecutive comment lines (3+) explaining code flow
+**Excessive Comment Indicators** (may suggest refactoring)
+- [ ] Multiple consecutive comment lines explaining code flow
 - [ ] Every variable assignment has a comment
 - [ ] Comment length exceeds code length in same section
 - [ ] Comments have more complex vocabulary than code
 
-**Refactoring Action:**
-If comment density exceeds limits:
+**Refactoring Actions to Consider:**
+When comments indicate complexity issues:
 1. Extract commented blocks into named functions
 2. Rename variables to eliminate need for explanation
 3. Simplify logic to make flow obvious

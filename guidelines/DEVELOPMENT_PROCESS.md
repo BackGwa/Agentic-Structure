@@ -31,20 +31,26 @@ When user provides feature request:
 3. Wait for approval if user expectations differ
 
 ### Small Steps: Incremental Delivery Criteria
-Each implementation step MUST meet these criteria:
+Each implementation step should meet these criteria:
 
-**Size Limits:**
-- [ ] Changes affect ≤5 files (if more, break into sub-steps)
-- [ ] Adds or modifies ≤200 lines of code (if more, break into sub-steps)
+**Small Steps Principle:**
 - [ ] Completes one logical unit (function, component, endpoint, test suite)
-
-**Quality Gates:**
 - [ ] Can be validated independently (has observable behavior)
 - [ ] Does not break existing functionality
 - [ ] Passes all existing tests
 
-**When Request Exceeds Limits:**
-1. Break into steps meeting above criteria
+**Consider splitting when:**
+- Change spans many unrelated areas of codebase
+- Mixed concerns (refactoring + new feature)
+- Cannot validate without completing additional work
+
+**Coherent changes may naturally span multiple files or significant lines:**
+- Consistent refactoring across related components
+- Complete feature with types + logic + tests
+- Documentation or configuration updates
+
+**When Breaking Down Work:**
+1. Identify logical boundaries between sub-tasks
 2. Propose step sequence to user
 3. Implement one step at a time
 4. Validate before proceeding to next step
