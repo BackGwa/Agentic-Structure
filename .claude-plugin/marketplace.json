@@ -1,0 +1,23 @@
+{
+    "name": "agentic-structure",
+    "owner": {
+        "name": "BackGwa",
+        "email": "backgwa@icloud.com"
+    },
+    "metadata": {
+        "description": "A collaboration-first prompting framework for efficient programming through user-agent feedback.",
+        "version": "2.0.0"
+    },
+    "plugins": [
+        {
+            "name": "agentic-structure",
+            "description": "A collaboration-first prompting framework for efficient programming through user-agent feedback.",
+            "source": "./agentic-structure",
+            "license": "MIT",
+            "strict": false,
+            "skills": [
+                "./"
+            ]
+        }
+    ]
+}

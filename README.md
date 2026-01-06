@@ -17,18 +17,24 @@ A collaboration-first guideline framework for AI agents to make programming more
 - [Star History](#star-history)
 
 ## How to use
-Put `AGENTS.md` and the `guidelines/` folder in your project root. That’s it.
+This framework is available as a Claude Skill. Install it using Claude Code:
+
+```bash
+claude skill install agentic-structure
+```
+
+Or manually add this repository's `.claude-plugin` folder to your project.
 
 ## Guideline docs
 |Document|What it covers|
 |---|---|
-|`guidelines/DEVELOPMENT_PROCESS.md`| Principles for clear, safe, production-ready, maintainable development |
-|`guidelines/CODING_STANDARDS.md`| Coding rules for clarity, structure, reuse, and maintainable change |
-|`guidelines/ERROR_HANDLING.md`| Error handling principles, boundaries, and security-minded failures |
-|`guidelines/SECURITY_GUIDELINES.md`| Secure defaults for secrets, hashing, auth, and production exposure |
-|`guidelines/DISCUSSION_GUIDELINES.md`| When and how to run discussions to reach aligned decisions |
-|`guidelines/COMMENTING_GUIDELINES.md`| Minimal, high-signal commenting rules and documentation boundaries |
-|`guidelines/KNOWLEDGE_SHARING.md`| Knowledge request protocol for handling information gaps |
+|[`DEVELOPMENT_PROCESS.md`](agentic-structure/guidelines/DEVELOPMENT_PROCESS.md)| Principles for clear, safe, production-ready, maintainable development |
+|[`CODING_STANDARDS.md`](agentic-structure/guidelines/CODING_STANDARDS.md)| Coding rules for clarity, structure, reuse, and maintainable change |
+|[`ERROR_HANDLING.md`](agentic-structure/guidelines/ERROR_HANDLING.md)| Error handling principles, boundaries, and security-minded failures |
+|[`SECURITY_GUIDELINES.md`](agentic-structure/guidelines/SECURITY_GUIDELINES.md)| Secure defaults for secrets, hashing, auth, and production exposure |
+|[`DISCUSSION_GUIDELINES.md`](agentic-structure/guidelines/DISCUSSION_GUIDELINES.md)| When and how to run discussions to reach aligned decisions |
+|[`COMMENTING_GUIDELINES.md`](agentic-structure/guidelines/COMMENTING_GUIDELINES.md)| Minimal, high-signal commenting rules and documentation boundaries |
+|[`KNOWLEDGE_SHARING.md`](agentic-structure/guidelines/KNOWLEDGE_SHARING.md)| Knowledge request protocol for handling information gaps |
 
 ## Contributing
 Contributions are welcome! If you have suggestions for improving the guidelines or want to report issues:
