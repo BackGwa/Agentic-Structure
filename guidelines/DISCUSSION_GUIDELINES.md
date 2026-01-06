@@ -3,6 +3,15 @@
 ## Purpose and Importance
 Effective communication is the cornerstone of successful collaboration. This document outlines when and how to engage in productive discussions to ensure clarity, alignment, and high-quality outcomes in our development process.
 
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
 ## When to Initiate Discussion
 
 ### Handling Ambiguous Requirements
@@ -71,14 +80,14 @@ Before introducing any of the following, run this consistency check:
 2. **If pattern found in codebase:**
    - Use existing pattern for consistency
    - Example: "I found existing error handling uses custom Error classes, so I'll follow that pattern"
-3. **If pattern NOT found in codebase:**
-   - Present to user:
-     - "The codebase currently uses [X pattern]"
-     - "Your request would introduce [Y pattern]"
-     - "Options:"
-       - "A. Adapt request to use existing [X pattern]"
-       - "B. Introduce new [Y pattern] (requires changing conventions)"
-   - Wait for user decision
+ 3. **If pattern NOT found in codebase:**
+    - **Prefer discussing with user for alignment** (unless the new pattern is clearly superior or minimal):
+      - "The codebase currently uses [X pattern]"
+      - "Your request would introduce [Y pattern]"
+      - "Options:"
+        - "A. Adapt request to use existing [X pattern]"
+        - "B. Introduce new [Y pattern] (consider discussing if this affects architecture)"
+    - Proceed based on user input or clear project context
 
 ##### Example
 Request: "Add Redux for state management"
@@ -114,10 +123,10 @@ Before deviating from observed patterns, discuss with user.
 - [ ] Architectural decision affects multiple parts of system
 
 #### Option Presentation Protocol
-1. **Present 2-3 viable approaches** (not more - too many options paralyze decision-making)
-2. **Use structured comparison table** (see template below)
-3. **Include complexity assessment** (NOT time estimates - see assessment criteria below)
-4. **State your recommendation** with reasoning based on project context
+1. **Aim to present 2-3 viable approaches** (more options rarely improves decision quality)
+2. **Use structured comparison table when it clarifies trade-offs** (don't force it for simple decisions)
+3. **Include complexity assessment when scope is unclear** (not needed for trivial changes)
+4. **Always state your recommendation** with reasoning based on project context
 
 #### Complexity Assessment Criteria
 Replace "effort estimates" with these concrete measures:

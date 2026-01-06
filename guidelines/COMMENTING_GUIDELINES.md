@@ -9,10 +9,19 @@ Comments should convey essential intent with the minimum necessary words. If the
 - **Avoid comment noise**: Excessive comments reduce readability and make maintenance harder.
 - **High-signal only**: Add comments only when passing the Comment Signal Test below.
 
-### Comment Signal Test
-A comment is "high-signal" if it passes **2 or more** of these criteria:
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
 
-#### High Signal (justify comment)
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
+### Comment Signal Test
+**Strive to ensure a comment passes 2 or more of these criteria** (apply judgment, exceptions allowed for clear reasons):
+
+#### Signal High - Prefer adding comment when these apply
 - [ ] Explains non-obvious side effect (state mutation, API call, file I/O, caching, database write)
 - [ ] Documents security assumption (input is trusted/untrusted, auth required, rate limited)
 - [ ] Clarifies business rule from external requirement (legal, policy, API contract, client specification)
@@ -20,7 +29,7 @@ A comment is "high-signal" if it passes **2 or more** of these criteria:
 - [ ] Documents intentional deviation from best practice (with reason why deviation is necessary)
 - [ ] Explains non-obvious algorithm or optimization (why this specific approach was chosen)
 
-#### Low Signal (DO NOT comment)
+#### Signal Low - Generally avoid unless there's a clear reason to comment
 - [ ] Restates function name or variable name
 - [ ] Describes what code visibly does (code already shows this)
 - [ ] Adds attribution ("written by", "modified by") - use git instead
@@ -28,8 +37,9 @@ A comment is "high-signal" if it passes **2 or more** of these criteria:
 - [ ] Version history - use git instead
 - [ ] Commented-out code - delete it, git preserves history
 
-### Decision Protocol
-Before adding comment, ask these questions:
+### Decision Protocol - Apply these thought patterns
+**Before adding comment, work through these questions:**
+
 1. **Can I make code clearer instead?**
    - Rename variables/functions to be self-explanatory?
    - Extract complex logic into named functions?
@@ -42,9 +52,8 @@ Before adding comment, ask these questions:
    - WHY: Reasoning, constraints, trade-offs → Add comment
    - WHAT: Step-by-step description → Refactor code instead
 
-**Decision:**
-- If answers are "yes, yes, WHAT" → DO NOT add comment, refactor code
-- If answers are "no, no, WHY" → ADD comment
+**Apply judgment:**
+If the answer pattern suggests the comment adds no value, prefer refactoring the code for clarity instead.
 
 ### Comment Density Indicators
 Monitor comment patterns to identify potential code clarity issues:

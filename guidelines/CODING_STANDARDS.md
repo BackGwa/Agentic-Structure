@@ -9,6 +9,15 @@ Write code that is clear, safe, production-ready, and easy to maintain. The inte
 - Maintainable change: New features should be easy to add, modify, or remove with minimal risk.
 - Production mindset: Assume code can be deployed to production and exposed to real usage.
 
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
 ## Naming
 - Use names that describe intent and behavior: variables, functions, classes, and modules should be self-explanatory.
 - Avoid vague names (`data`, `temp`, `handle`, `util`) unless the scope is extremely small and obvious.
@@ -22,11 +31,13 @@ Write code that is clear, safe, production-ready, and easy to maintain. The inte
 - [ ] File size is reasonable for its purpose (large files may indicate multiple concerns)
 - [ ] File has clear, cohesive focus (mixing multiple unrelated concerns suggests splitting)
 
-### Split Triggers (ANY = must split file)
-- [ ] File mixes UI and business logic
-- [ ] File mixes multiple unrelated features (e.g., authentication + payment processing)
+### Split Triggers - Aim for files with clear, focused scope
+**Consider splitting when multiple of these conditions apply** (use judgment based on project context):
+
+- [ ] File mixes UI and business logic - Separation improves testability or clarity
+- [ ] File mixes multiple unrelated features (e.g., authentication + payment processing) - Combining features creates confusion or maintenance burden
 - [ ] File contains multiple unrelated data types
-- [ ] Scrolling required to see file structure overview
+- [ ] File size makes navigation difficult
 - [ ] File name is too generic ("utils", "helpers", "common")
 
 ### Organization Pattern
@@ -39,6 +50,13 @@ Prefer this structure for features:
   └── index.ts        # Public exports only
 ```
 Keep files focused and cohesive. Let file size emerge from actual feature needs.
+
+### File Organization Philosophy
+**Strive for balanced structure:**
+- **Prefer focused files** - Each file should have a clear, cohesive purpose
+- **Avoid over-fragmentation** - Don't split related code just for the sake of small files
+- **Let size emerge naturally** - File size should be a consequence, not a goal
+- **Consider navigation cost** - If splitting makes understanding harder, keep it together
 
 ### Avoid Over-Fragmentation
 DO NOT split when:

@@ -5,6 +5,15 @@ This document defines how we build software collaboratively in a way that is cle
 
 ## Core Principles
 
+### Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
 ### Core-First: Priority-Based Implementation
 Implement in this priority order:
 
@@ -120,7 +129,7 @@ You CAN proceed without asking when ALL of these are true:
 - [ ] No architectural or schema changes required
 - [ ] No new dependencies or breaking changes
 - [ ] Requirements are clear and unambiguous
-- [ ] Solution is well within the "small steps" criteria (≤5 files, ≤200 lines)
+- [ ] Clear project context exists to support the decision
 
 ### Handling Disagreement
 When there is disagreement:

@@ -9,6 +9,16 @@ Security is a core requirement when building software. Assume any project may be
 - Secure by Default: Prefer safe defaults; require explicit opt-in for risky behavior.
 - Defense in Depth: Use layered controls (validation, authz, rate limiting, monitoring).
 
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+- **Security always takes precedence** - If a guideline conflicts with efficiency or simplicity, choose security
+
 ## Secrets and Sensitive Configuration
 Never hardcode secrets or sensitive values in source code, constants, or committed configuration.
 
@@ -60,20 +70,18 @@ Treat abuse resistance as a baseline production requirement, especially for publ
 
 ### Recommended controls
 
-#### Rate Limit Baselines (Suggested Starting Points)
-Use these as **initial guidance only**. Adjust based on your specific use case, observed traffic patterns, resource constraints, and security requirements.
+#### Rate Limit Baselines (Autonomous Decision Guidance)
+Apply rate limiting based on project context and threat model. Consider per-IP and per-identity limits (user, account, API key, tenant) with these general principles:
 
-Use per-IP and per-identity limits (user, account, API key, tenant) with these suggested baseline quotas:
+| Endpoint Type | Suggested Approach | Scope | Reasoning |
+|--------------|-------------------|-------|-----------|
+| Authentication (login, signup, password reset) | Stricter limits, few attempts per minute | Per IP address | Prevent brute force while allowing legitimate retries |
+| High-cost operations (search, reports, AI) | Moderate limits based on resource costs | Per user/account | Balance usage with resource protection |
+| Public APIs | Higher limits adjusted for use case | Per API key | Scale based on integration requirements |
+| Public webhooks | Higher limits for event-driven systems | Per tenant | Adjust based on event volume patterns |
 
-| Endpoint Type | Baseline Quota | Scope | Reasoning |
-|--------------|----------------|-------|-----------|
-| Authentication (login, signup, password reset) | 5 attempts per minute | Per IP address | Prevent brute force while allowing legitimate retries |
-| High-cost operations (search, reports, AI) | 10 requests per minute | Per user/account | Balance usage with resource protection |
-| Public APIs | 100 requests per hour | Per API key | Standard tier for external integrations |
-| Public webhooks | 1000 requests per hour | Per tenant | High volume for event-driven systems |
-
-⚠️ **These are suggestions, not requirements.** Every application has different needs:
-- Adjust quotas based on observed legitimate usage
+⚠️ **Autonomous application principles.** Every application has different needs:
+- Adjust quotas based on observed legitimate usage and traffic patterns
 - Consider resource costs and security risks
 - Document your chosen limits and rationale
 

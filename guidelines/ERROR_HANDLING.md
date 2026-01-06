@@ -9,30 +9,38 @@ Error handling is not primarily about catching exceptions; it is about designing
 - Every failure must have a clear "owner" for where it is handled. Convert/map failures consistently at boundaries.
 - Do not leak sensitive information through error messages or logs.
 
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
 ## Decision Point: When to Add Try-Catch
 
 ### Meaningful Error Handling Test
-Add try-catch ONLY if it meets **at least one** of these criteria:
+**Prefer to add try-catch when it meets at least one of these criteria** (use judgment for edge cases):
 
-#### Meaningful (justify try-catch)
+#### Signal High - Prefer try-catch when these apply
 - [ ] Can recover from error (retry with backoff, fallback to alternate path, use cached value)
 - [ ] Can add contextual information not in original error (what operation was being performed, which resource)
 - [ ] Can transform error into domain-specific error type (DatabaseError → UserNotFoundError)
 - [ ] Can clean up resources (close files, release connections, unlock resources)
 - [ ] Can apply different handling based on error type (transient vs permanent, auth vs validation)
 
-#### Meaningless (DO NOT add try-catch)
+#### Signal Low - Generally avoid unless there's a compelling reason
 - [ ] Catch only to log and rethrow unchanged
 - [ ] Catch only to wrap in generic error with no added context
 - [ ] Catch broad exception type (Error, Exception) and treat all cases identically
 - [ ] Catch to return undefined/null without signaling failure to caller
 - [ ] Catch to hide errors from caller who needs to know about failure
 
-### Decision Template
-Before adding try-catch, complete this sentence:
-**"I am catching [specific error type] because [recovery action OR context added]"**
-
-If you cannot complete this sentence meaningfully, DO NOT add try-catch.
+### Decision Template - Use this as a mental model
+**Before adding try-catch, ask yourself:**
+"What specific error am I catching, and what meaningful action am I taking?"
+"If you cannot identify both, prefer to let the error propagate instead."
 
 ### Examples
 

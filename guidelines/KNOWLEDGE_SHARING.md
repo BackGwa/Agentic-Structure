@@ -3,6 +3,15 @@
 ## Purpose
 This protocol defines how to detect knowledge gaps, request information from users, and document external references during development. Use this when you need information beyond your training data or codebase exploration to implement correctly without hallucination.
 
+## Application Philosophy
+These guidelines are designed to be applied thoughtfully, not rigidly:
+
+- **Strive to follow** - Aim to apply these principles consistently, but use judgment when exceptions are warranted
+- **Apply incrementally** - Build good habits gradually; it's acceptable to apply these imperfectly at first and improve over time
+- **Context matters** - Adapt guidelines to project size, team structure, and specific requirements
+- **Progress over perfection** - Moving in the right direction is better than perfect adherence that delays delivery
+- **Question and clarify** - When unsure, err on the side of asking or documenting your reasoning
+
 ## Decision Point 1: Knowledge Gap Detection
 
 ### Trigger Conditions (ALL must be true to proceed with knowledge request)
