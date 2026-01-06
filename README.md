@@ -1,5 +1,5 @@
 # Agentic Structure
-A collaboration-first prompting/development guideline framework to make programming more efficient. The goal is to get better outcomes through user ↔ agent feedback, rather than the agent planning and executing everything alone.
+A collaboration-first guideline framework for AI agents to make programming more efficient. The goal is to get better outcomes through user ↔ agent feedback, rather than the agent planning and executing everything alone.
 
 ![GitHub License](https://img.shields.io/github/license/BackGwa/Agentic-Structure)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/BackGwa)
