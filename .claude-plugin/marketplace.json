@@ -6,18 +6,18 @@
     },
     "metadata": {
         "description": "A collaboration-first prompting framework for efficient programming through user-agent feedback.",
-        "version": "2.0.0"
+        "version": "2.0.1"
     },
     "plugins": [
         {
             "name": "agentic-structure",
             "description": "A collaboration-first prompting framework for efficient programming through user-agent feedback.",
-            "source": "./agentic-structure",
+            "source": "./plugins",
             "license": "MIT",
-            "strict": false,
-            "skills": [
-                "./"
-            ]
+            "author": {
+                "name": "BackGwa",
+                "email": "backgwa@icloud.com"
+            }
         }
     ]
 }

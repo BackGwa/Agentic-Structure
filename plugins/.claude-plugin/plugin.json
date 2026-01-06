@@ -1,0 +1,11 @@
+{
+    "name": "agentic-structure",
+    "version": "2.0.1",
+    "description": "A collaboration-first prompting framework for efficient programming through user-agent feedback.",
+    "author": {
+        "name": "BackGwa",
+        "email": "backgwa@icloud.com"
+    },
+    "repository": "https://github.com/BackGwa/Agentic-Structure",
+    "license": "MIT"
+}
