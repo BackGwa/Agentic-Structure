@@ -4,7 +4,17 @@ A collaboration-first prompting/development guideline framework to make programm
 ![GitHub License](https://img.shields.io/github/license/BackGwa/Agentic-Structure)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/BackGwa)
 ![GitHub Repo stars](https://img.shields.io/github/stars/BackGwa/Agentic-Structure)
-![GitHub forks](https://img.shields.io/github/forks/BackGwa/Agentic-Structure)
+![GitHub forks](https://img.shields.io/github/forks/BackGwa/Agentic-Structure)  
+![Last Commit](https://img.shields.io/github/last-commit/BackGwa/Agentic-Structure)
+![Contributors](https://img.shields.io/github/contributors/BackGwa/Agentic-Structure)
+![Issues](https://img.shields.io/github/issues/BackGwa/Agentic-Structure)
+
+## Table of Contents
+- [How to use](#how-to-use)
+- [Guideline docs](#guideline-docs)
+- [Contributing](#contributing)
+- [License](#license)
+- [Star History](#star-history)
 
 ## How to use
 Put `AGENTS.md` and the `guidelines/` folder in your project root. That’s it.
@@ -12,14 +22,26 @@ Put `AGENTS.md` and the `guidelines/` folder in your project root. That’s it.
 ## Guideline docs
 |Document|What it covers|
 |---|---|
-|`guidelines/DEVELOPMENT_PROCESS.md`| Collaborative workflow: clarify → implement → validate → wrap up |
-|`guidelines/CODING_STANDARDS.md`| Readability, structure, reuse, consistency |
-|`guidelines/ERROR_HANDLING.md`| Layered responsibilities, safe failures/recovery, no sensitive leakage |
-|`guidelines/SECURITY_GUIDELINES.md`| Secrets, authn/authz, uploads, rate limiting, operational safety |
-|`guidelines/DISCUSSION_GUIDELINES.md`| When/how to discuss ambiguity and trade-offs; decision recording |
-|`guidelines/COMMENTING_GUIDELINES.md`| Minimal, high-signal comments (explain “why”) |
-|`guidelines/KNOWLEDGE_SHARING.md`| Lightweight references under `references/` for reusable context/decisions |
+|`guidelines/DEVELOPMENT_PROCESS.md`| Principles for clear, safe, production-ready, maintainable development |
+|`guidelines/CODING_STANDARDS.md`| Coding rules for clarity, structure, reuse, and maintainable change |
+|`guidelines/ERROR_HANDLING.md`| Error handling principles, boundaries, and security-minded failures |
+|`guidelines/SECURITY_GUIDELINES.md`| Secure defaults for secrets, hashing, auth, and production exposure |
+|`guidelines/DISCUSSION_GUIDELINES.md`| When and how to run discussions to reach aligned decisions |
+|`guidelines/COMMENTING_GUIDELINES.md`| Minimal, high-signal commenting rules and documentation boundaries |
+|`guidelines/KNOWLEDGE_SHARING.md`| Knowledge request protocol for handling information gaps |
+
+## Contributing
+Contributions are welcome! If you have suggestions for improving the guidelines or want to report issues:
+
+1. Fork the repository
+2. Create your feature branch
+3. Make your changes
+4. Submit a pull request
+
+Please ensure your contributions align with the collaborative philosophy of this framework.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Star History
-
 ![Star History Chart](https://api.star-history.com/svg?repos=BackGwa/Agentic-Structure&type=Date)
