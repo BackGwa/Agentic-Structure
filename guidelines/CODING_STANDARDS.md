@@ -138,17 +138,8 @@ Deep nesting may be appropriate for:
 - HTML/JSX rendering with natural hierarchy
 
 Example of shallow nesting:
-```javascript
-function example() {
-  if (condition) {
-    for (item of items) {
-      if (check) {
-        // Consider refactoring if complexity increases
-      }
-    }
-  }
-}
-```
+
+When a condition is true, iterate through each item in a collection, and if a specific check passes for that item, perform an action. This structure contains three nesting levels: an outer condition, a loop, and an inner condition. If complexity increases beyond readability, consider refactoring.
 
 ### Refactoring Triggers
 Consider refactoring when:
@@ -166,30 +157,12 @@ When trigger is met, apply IN ORDER:
 5. **Extract complex conditions**: Assign condition to named boolean variable
 
 ### Example Refactoring
-```javascript
-// BEFORE (4 levels - NOT ALLOWED)
-function processOrder(order) {
-  if (order) {
-    if (order.isValid) {
-      for (let item of order.items) {
-        if (item.inStock) {
-          // process item
-        }
-      }
-    }
-  }
-}
 
-// AFTER (2 levels - ALLOWED)
-function processOrder(order) {
-  if (!order || !order.isValid) return;  // Early exit + guard clause
+BEFORE: Check if order exists, then check if it is valid, then loop through each item, then check if each item is in stock, and finally process the item. This creates four levels of nesting and becomes difficult to follow.
 
-  for (let item of order.items) {
-    if (!item.inStock) continue;  // Skip instead of nest
-    processItem(item);  // Extracted function
-  }
-}
-```
+AFTER: First check if order is missing or invalid and return early. Then loop through each item, skipping items that are not in stock, and call a separate function to process each item. This reduces nesting to two levels: the loop and the function call.
+
+The refactoring applies early returns, guard clauses, extraction of complex logic into a separate function, and uses skip logic instead of nesting for the inner condition.
 
 ### Keep Logic Testable
 - Isolate complex logic into smaller, independently testable functions
@@ -225,30 +198,12 @@ Avoid abstraction when:
 Create abstraction when it improves code quality—consider clarity, testability, and maintainability, not line count savings.
 
 #### Example
-```javascript
-// Repeated pattern that benefits from abstraction
-function saveUser(user) {
-  validate(user);
-  const result = await db.save(user);
-  logger.log('User saved');
-  return result;
-}
 
-// Similar pattern for products, orders, etc.
-// Abstraction improves maintainability and consistency
+When working with different entity types like users, products, or orders, you might repeatedly write functions that first validate the entity, then save it to the database, then log that the operation completed, and finally return the result.
 
-function saveEntity(entity, entityType) {
-  validate(entity);
-  const result = await db.save(entity);
-  logger.log(`${entityType} saved`);
-  return result;
-}
+This pattern repeats across multiple entity types. Instead, create a generalized function that accepts the entity and its type as parameters. The function performs the same validate-save-log-return sequence for any entity type. The benefit is that changes to the save logic need to be made in only one location, improving maintainability and consistency.
 
-// Usage is clearer and changes to save logic happen in one place
-saveEntity(user, 'User');
-saveEntity(product, 'Product');
-saveEntity(order, 'Order');
-```
+Consider whether this abstraction improves code quality more than it adds complexity.
 
 ### Pattern Consistency
 - Keep codebase patterns consistent (see DISCUSSION_GUIDELINES.md for pattern detection)

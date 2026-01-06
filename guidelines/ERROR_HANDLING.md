@@ -45,75 +45,24 @@ These guidelines are designed to be applied thoughtfully, not rigidly:
 ### Examples
 
 #### Meaningful Try-Catch
-```javascript
-// GOOD: Adds context
-try {
-  await api.syncUser(userId);
-} catch (error) {
-  throw new Error(`Failed to sync user ${userId} to CRM: ${error.message}`);
-}
 
-// GOOD: Recovers with fallback
-try {
-  return await primaryApi.getData();
-} catch (error) {
-  logger.warn(`Primary API failed, using cache: ${error}`);
-  return await cache.get('data');
-}
+Pattern 1: Wrap an operation in a try block, catch any error that occurs, and throw a new error that includes what operation was being performed and the original error message. This adds context about what failed.
 
-// GOOD: Different handling by error type
-try {
-  await processPayment(order);
-} catch (error) {
-  if (error instanceof TransientError) {
-    return retryLater(order);
-  }
-  if (error instanceof FraudError) {
-    return blockAndNotify(order);
-  }
-  throw error;  // Unknown error, propagate
-}
+Pattern 2: Attempt to retrieve data from a primary API. If it fails, log a warning and retrieve the data from a cache instead. This provides a fallback to maintain availability when the primary source is unavailable.
 
-// GOOD: Resource cleanup
-const file = await openFile(path);
-try {
-  return await processFile(file);
-} finally {
-  await file.close();  // Always cleanup
-}
-```
+Pattern 3: Wrap an operation in a try block. In the catch block, check the error type. If it is a transient or temporary error, retry the operation later. If it is a business rule error like fraud, block the request and notify. For any other error type, let the error propagate upward.
 
-#### Meaningless Try-Catch
-```javascript
-// BAD: Only logs and rethrows (no value added)
-try {
-  await api.call();
-} catch (error) {
-  console.log(error);
-  throw error;
-}
+Pattern 4: Open a resource like a file, then in a try block process the resource. In the finally block, which always executes regardless of success or failure, close the resource to prevent leaks.
 
-// BAD: Hides error without signaling failure
-try {
-  return await fetchData();
-} catch (error) {
-  return null;  // Caller doesn't know fetch failed
-}
+#### Patterns to Avoid
 
-// BAD: Generic wrapping without context
-try {
-  await complexOperation();
-} catch (error) {
-  throw new Error('Something went wrong');  // No useful info
-}
+Pattern 1: Wrap an operation in a try block, catch any error, log it to the console, and then immediately rethrow the error. This adds no value and only introduces noise.
 
-// BAD: Broad catch treating everything the same
-try {
-  await manyOperations();
-} catch (error) {
-  return {success: false};  // Lost all error details
-}
-```
+Pattern 2: Wrap a data-fetching operation in a try block. If an error occurs, catch it and return null or undefined. The caller cannot distinguish between a successful fetch that returned no data and a failed fetch.
+
+Pattern 3: Wrap an operation in a try block. If an error occurs, catch it and throw a generic error like "Something went wrong". This discards all the useful information from the original error, making debugging impossible.
+
+Pattern 4: Wrap multiple operations in a try block. Catch all errors regardless of type and return a simple success or failure flag. This loses error details and prevents the caller from handling different types of errors appropriately.
 
 ## Where to Handle Errors (Layer Responsibilities)
 Separate responsibilities by layer:
