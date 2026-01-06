@@ -20,7 +20,8 @@ A collaboration-first guideline framework for AI agents to make programming more
 This framework is available as a Claude Skill. Install it using Claude Code:
 
 ```bash
-
+/plugin marketplace add BackGwa/Agentic-Structure
+/plugin install agentic-structure@agentic-structure
 ```
 
 Or manually add this repository's `.claude-plugin` folder to your project.
